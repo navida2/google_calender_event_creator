@@ -12,18 +12,18 @@ SCOPES = ["https://www.googleapis.com/auth/calendar"]
 def api_validate():
     creds = None
     if os.path.exists("token.json"):
-        creds = Credentials.from_authorized_user_file("token.json")
+        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
 
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
-    else:
-        flow = InstalledAppFlow.from_client_secrets_file("creds.json", SCOPES)
-        creds = flow.run_local_server(port=0)
-    with open("token.json", "w") as token:
-        token.write(creds.to_json())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file("creds.json", SCOPES)
+            creds = flow.run_local_server(port=0)
+        with open("token.json", "w") as token:
+            token.write(creds.to_json())
     try:
-        service = build("calender", "v3", credentials=creds)
+        service = build("calendar", "v3", credentials=creds)
         return service
 
     except HttpError as error:
@@ -37,5 +37,5 @@ def create_calender(service, name):
     new_calendar = service.calendars().insert(body=calendar).execute()
     return new_calendar['id']
 
-def add_events():
-    pass
+def add_events(service, calender_id, event_details):
+    service.events().insert(calendarId=calender_id, body=event_details).execute()
