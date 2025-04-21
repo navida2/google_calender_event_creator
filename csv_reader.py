@@ -39,15 +39,15 @@ def format_into_google_calender_event(dictionary):
             'location': events['location'],
             'description': "",
             'start':{
-                'dateTime':f"{qtr_start}T{converted_start_time}-07:00",
+                'dateTime':f"{qtr_start}T{converted_start_time}",
                 'timeZone':'America/Los_Angeles',
             },
             'end':{
-                'dateTime':f"{qtr_start}T{converted_end_time}-07:00",
+                'dateTime':f"{qtr_start}T{converted_end_time}",
                 'timeZone':'America/Los_Angeles',
             },
             'recurrence': [
-                 f"RRULE:FREQ=WEEKLY;UNTIL=20250314;BYDAY={','.join(events['days'].split())}",
+                 f"RRULE:FREQ=WEEKLY;UNTIL=20250620;BYDAY={','.join(events['days'].split())}",
             ],
          'reminders': {
             'useDefault': True,
